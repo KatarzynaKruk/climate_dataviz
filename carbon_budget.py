@@ -33,5 +33,4 @@ ax[0].annotate('Invention of steam engine',
                arrowprops=dict(facecolor='black', shrink=0.05),
                horizontalalignment='left', verticalalignment='top')
 sns.despine(trim=True)
-plt.show()
-plt.savefig('carbon_budget.png')
+fig.savefig('carbon_budget.png')
