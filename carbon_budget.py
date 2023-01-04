@@ -14,7 +14,7 @@ import scipy.stats as stats
 # get data from Our World in Data: https://github.com/owid/co2-data
 # codebook; https://github.com/owid/co2-data/blob/master/owid-co2-codebook.csv
 data = pd.read_csv('https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv',
-                        usecols= ['year', 'co2', 'cumulative_co2', 'country'])
+                        usecols= ['year', 'co2', 'country'])
 # todo Kasia: try for different places in the world. at the end, can generate for each (269 places)
 place = 'World'
 df_historic = data.loc[data.country == place, :]
@@ -37,11 +37,12 @@ for scen_idx, beta_param in enumerate(beta_params):
     scenario_list.append(df_future)
 
 df = pd.concat(scenario_list).reset_index()
+# %%
 
 # for each scenario, integrate to get the cumulative CO2
 df['cumulative_co2_scenarios'] = df.groupby(['scenario'])['co2'].cumsum()
 # remove duplicate of all the scenarios that lie in the past
-df.loc[df.year < df_historic.year.max(), 'scenario'] = 0
+df.loc[df.year < df_historic.year.max()+1, 'scenario'] = 0
 df.drop_duplicates(inplace=True)
 
 # %% now plot some historic CO2
