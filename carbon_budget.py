@@ -11,8 +11,33 @@ See the repo's README for data sources.
 import pandas as pd
 import seaborn as sns
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import scipy.stats as stats
+
+def seaborn_style():
+    """
+    Set seaborn style for plotting figures
+    """
+    sns.set(style="ticks", context="paper",
+            font="Arial",
+            rc={"font.size": 9,
+                "axes.titlesize": 9,
+                "axes.labelsize": 9,
+                "lines.linewidth": 1,
+                "xtick.labelsize": 7,
+                "ytick.labelsize": 7,
+                "savefig.transparent": False,
+                "savefig.dpi": 300,
+                "xtick.major.size": 2.5,
+                "ytick.major.size": 2.5,
+                "xtick.minor.size": 2,
+                "ytick.minor.size": 2,
+                })
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+
+seaborn_style()
 
 # %% ===============================
 # get data https://doi.org/10.5194/essd-14-4811-2022
@@ -73,6 +98,7 @@ for scen_idx, beta_param in enumerate(beta_params):
     scenario_list.append(df_future)
 
 df = pd.concat(scenario_list).reset_index()
+
 # %% ===============================
 # for each scenario, integrate to get the cumulative CO2
 df['cumulative_co2_scenarios'] = df.groupby(['scenario'])['co2'].cumsum()
@@ -92,9 +118,9 @@ df['temp_scenarios'] =  0.8 * 5.35 * np.log(df['ppm_co2_scenarios'] / baseline)
 
 # %% ===============================
 # visualize all of these
-cmap = 'viridis' # can change the colors in powerpoint
+cmap = 'malo' # can change the colors in powerpoint
 
-fig, ax = plt.subplots(4, 1, figsize=(6, 12), 
+fig, ax = plt.subplots(3, 1, figsize=(6, 9), 
                        sharex=True, sharey=False)
 sns.lineplot(data=df, x='year', y='co2', hue='scenario', 
             palette=cmap,
@@ -102,32 +128,34 @@ sns.lineplot(data=df, x='year', y='co2', hue='scenario',
             ax=ax[0]).set(xlim=[1900, 2100], ylim=[0, 40],
                            ylabel='Yearly CO2 emissions\n(GtCO2)',
                            xlabel='')
-sns.lineplot(data=df, x='year', y='cumulative_co2_scenarios', 
-            hue='scenario', 
-            palette=cmap, legend=False,
-            ax=ax[1]).set(ylabel='Total Gt CO2\nadded to atmosphere', xlabel='')
+# sns.lineplot(data=df, x='year', y='cumulative_co2_scenarios', 
+#             hue='scenario', 
+#             palette=cmap, legend=False,
+#             ax=ax[1]).set(ylabel='Total Gt CO2\nadded to atmosphere', xlabel='')
 
 # convert to ppm in atmosphere
 sns.lineplot(data=df, x='year', y='ppm_co2_scenarios', 
             hue='scenario', 
             palette=cmap, legend=False,
-            ax=ax[2]).set(ylabel='Concentration \natmospheric CO2 (ppm)', xlabel='')
+            ax=ax[1]).set(ylabel='Concentration \natmospheric CO2 (ppm)', xlabel='')
 sns.lineplot(data=keeling, x='year', y='average',  # overlay Keeling curve onto ppm
             color='grey', legend=False,
-            ax=ax[2])
+            ax=ax[1])
 
 # convert to temperature
 sns.lineplot(data=df, x='year', y='temp_scenarios', 
             hue='scenario', 
             palette=cmap, legend=False, 
-            ax=ax[3])
+            ax=ax[2])
 sns.lineplot(data=temp_df, x='year', y='value', 
             color='grey', legend=False,
-            ax=ax[3]).set(ylabel='Temperature $(\Delta ^{\circ}$C)', xlabel='', ylim=[-0.9, 2.2])
+            ax=ax[2]).set(ylabel='Temperature $(\Delta ^{\circ}$C)', xlabel='', ylim=[-0.9, 2.2])
 
 # layout
 sns.despine(trim=True)
-fig.suptitle('Global CO2 emissions and climate change')
+fig.suptitle('Global CO2 emissions and climate change', x=0.5, y=0.9)
+fig.supxlabel('By Anne Urai | Data: NASA, NOAA, Global Carbon Project', 
+               x=0.9, y=0.05, ha='right', color='lightgrey')
 fig.savefig('figures/carbon_emissions_global.png',
             facecolor='white', transparent=False)
 fig.savefig('figures/carbon_emissions_global.svg',
@@ -155,16 +183,17 @@ budgets_df['prct'] = budgets_df['variable'].str.extract('(\d+)')
 
 # %%
 fig, ax = plt.subplots(1, 2, figsize=(8, 4))
-sns.scatterplot(data=budgets_df, x='co2', y='value', hue='scenario', palette='viridis',
+sns.scatterplot(data=budgets_df, x='co2', y='value', hue='scenario', palette=cmap,
                 ax=ax[0], size='prct', legend='brief')
 
 ax[0].set(ylabel='Temperature $(\Delta ^{\circ}$C) exceeded', ylim=[1, 2.5],
-        xlabel='Additional CO2 emissions from 2020 (GtCO2)', xlim=[0, 1500])
+        xlabel='Additional CO2 emissions from 2020 (GtCO2)', xlim=[0, 1500], 
+        title='Carbon budgets')
 sns.despine(trim=True)
 ax[0].legend(loc='center left', bbox_to_anchor=(1.25, 0.5), ncol=1)
 ax[1].set_axis_off()
 
-fig.suptitle('Carbon budgets')
+fig.supxlabel('By Anne Urai | Data: IPCC', x=0.3, y=-0.05, ha='right', color='lightgrey')
 fig.savefig('figures/carbon_budgets.png',
             facecolor='white', transparent=False)
 fig.savefig('figures/carbon_budgets.svg',
