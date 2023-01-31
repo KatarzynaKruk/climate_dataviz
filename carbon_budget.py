@@ -1,6 +1,10 @@
 """
 Code by Anne Urai, Leiden University, 2022
 Run with ssm_env on Windows
+
+This script visualizes the carbon budget, and shows how different emission reduction scenarios lead to different temperature changes.
+See the repo's README for data sources.
+
 """
 
 # %%
@@ -13,7 +17,7 @@ import scipy.stats as stats
 # %% ===============================
 # get data https://doi.org/10.5194/essd-14-4811-2022
 df_historic = pd.read_excel('https://globalcarbonbudgetdata.org/downloads/latest-data/Global_Carbon_Budget_2022v1.0.xlsx',
-                    sheet_name='Historical Budget', header=15)
+                    sheet_name='Historical Budget', header=15, usecols='A:B')
 
 # All values in billion tonnes of carbon per year (GtC/yr), for the globe. 
 # For values in billion tonnes of carbon dioxide (CO2) per year, multiply the numbers below by 3.664.
@@ -53,6 +57,21 @@ for scen_idx, beta_param in enumerate(beta_params):
     df_future['scenario'] = scen_idx + 1
     scenario_list.append(df_future)
 
+# and another set, but with net-zero only in 2075
+beta_params = [ [3,3], [5,2]] # fast, medium, procrastinate
+for scen_idx, beta_param in enumerate(beta_params):
+    x = np.linspace(0, 1, 54)
+    this_cdf = df_historic.co2.values[-1] * (-stats.beta.cdf(x,
+                beta_param[0], beta_param[1]) + 1)
+
+    # add to dataframe
+    df_future = pd.concat([df_historic, 
+        pd.DataFrame({'year':np.arange(2022, 2076), 'co2':this_cdf}),
+        pd.DataFrame({'year':np.arange(2075, 2101), 'co2':np.zeros(26,)}
+        )])
+    df_future['scenario'] = scen_idx + 4
+    scenario_list.append(df_future)
+
 df = pd.concat(scenario_list).reset_index()
 # %% ===============================
 # for each scenario, integrate to get the cumulative CO2
@@ -66,14 +85,16 @@ df.drop_duplicates(inplace=True)
 df['ppm_co2_scenarios'] = df['cumulative_co2_scenarios'] / 15.5 + 300
 
 # %% ===============================
-# Equilibrium Climate Sensitivity (ECS) is the temperature change that would occur if the atmospheric CO2 concentration were doubled
-#df['temp_scenarios'] = 
+# map ppm to temperature change
+# first way: \Delta T = 0.8 * 5.35 * ln(CO2/CO2_0) 
+baseline = df.loc[(df.year > 1951) & (df.year < 1980), 'ppm_co2_scenarios'].mean() # NASA GIS baseline years
+df['temp_scenarios'] =  0.8 * 5.35 * np.log(df['ppm_co2_scenarios'] / baseline)
 
 # %% ===============================
 # visualize all of these
 cmap = 'viridis' # can change the colors in powerpoint
 
-fig, ax = plt.subplots(4, 1, figsize=(7, 12), 
+fig, ax = plt.subplots(4, 1, figsize=(6, 12), 
                        sharex=True, sharey=False)
 sns.lineplot(data=df, x='year', y='co2', hue='scenario', 
             palette=cmap,
@@ -96,33 +117,57 @@ sns.lineplot(data=keeling, x='year', y='average',  # overlay Keeling curve onto 
             ax=ax[2])
 
 # convert to temperature
+sns.lineplot(data=df, x='year', y='temp_scenarios', 
+            hue='scenario', 
+            palette=cmap, legend=False, 
+            ax=ax[3])
 sns.lineplot(data=temp_df, x='year', y='value', 
             color='grey', legend=False,
-            ax=ax[3]).set(ylabel='Temperature $(\Delta ^{\circ}$C)', xlabel='', ylim=[-0.9, 2.2],)
-
-# # annotate
-# ax[0].annotate('Invention of steam engine', 
-#                xy=(1776, 100),  xycoords='data',
-#                xytext=(1776, 10000), textcoords='data',
-#                arrowprops=dict(facecolor='black', shrink=0.05),
-#                horizontalalignment='left', verticalalignment='top')
-# ax[0].annotate('Today', 
-#                xy=(2023, df.loc[df.year == 2023, 'co2'].max()*1.05),  xycoords='data',
-#                xytext=(2023, df.loc[df.year == 2023, 'co2'].max()*1.3), textcoords='data',
-#                arrowprops=dict(facecolor='black', shrink=0.05),
-#                horizontalalignment='center', verticalalignment='top')
-# ax[0].annotate('Net-zero', 
-#                xy=(2050, df.loc[df.year == 2049, 'co2'].max()*1.05),  xycoords='data',
-#                xytext=(2050, df.loc[df.year == 2049, 'co2'].max()*20), textcoords='data',
-#                arrowprops=dict(facecolor='black', shrink=0.1),
-#                horizontalalignment='left', verticalalignment='top')
+            ax=ax[3]).set(ylabel='Temperature $(\Delta ^{\circ}$C)', xlabel='', ylim=[-0.9, 2.2])
 
 # layout
 sns.despine(trim=True)
 fig.suptitle('Global CO2 emissions and climate change')
-fig.savefig('figures/carbon_budget_global.png',
+fig.savefig('figures/carbon_emissions_global.png',
             facecolor='white', transparent=False)
-fig.savefig('figures/carbon_budget_global.svg',
+fig.savefig('figures/carbon_emissions_global.svg',
+            facecolor='white', transparent=False)
+
+# %% ===============================
+# map onto budgets, from IPCC WG1 AR6 - Table TS.3
+temps = [1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+budget = {17: [900, 1200, 1450, 1750, 2000, 2300],
+        33:[650, 850, 1050, 1250, 1450, 1700],
+        50:[500, 650, 850, 1000, 1200, 1350],
+        67:[400, 550, 700, 850, 1000, 1150],
+        83:[300, 400, 550, 650, 800, 900]}
+
+# for each scenario, compute cumulative emissions from 2020 onwards
+budgets = df[df.year >= 2020].groupby('scenario')['co2'].sum().reset_index()
+
+# from this, estimate linear curves
+for prct in [17, 33, 50, 67, 83]:
+    budget_model = np.polyfit(budget[prct], temps, 1)
+    budgets[f'temp_{prct}p'] = budgets['co2'] * budget_model[0] + budget_model[1]
+
+budgets_df = pd.melt(budgets, id_vars=['scenario', 'co2'], value_vars=[f'temp_{prct}p' for prct in [17, 33, 50, 67, 83]])
+budgets_df['prct'] = budgets_df['variable'].str.extract('(\d+)')
+
+# %%
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+sns.scatterplot(data=budgets_df, x='co2', y='value', hue='scenario', palette='viridis',
+                ax=ax[0], size='prct', legend='brief')
+
+ax[0].set(ylabel='Temperature $(\Delta ^{\circ}$C) exceeded', ylim=[1, 2.5],
+        xlabel='Additional CO2 emissions from 2020 (GtCO2)', xlim=[0, 1500])
+sns.despine(trim=True)
+ax[0].legend(loc='center left', bbox_to_anchor=(1.25, 0.5), ncol=1)
+ax[1].set_axis_off()
+
+fig.suptitle('Carbon budgets')
+fig.savefig('figures/carbon_budgets.png',
+            facecolor='white', transparent=False)
+fig.savefig('figures/carbon_budgets.svg',
             facecolor='white', transparent=False)
 
 # %%
