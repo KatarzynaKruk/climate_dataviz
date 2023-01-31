@@ -118,7 +118,7 @@ df['temp_scenarios'] =  0.8 * 5.35 * np.log(df['ppm_co2_scenarios'] / baseline)
 
 # %% ===============================
 # visualize all of these
-cmap = 'malo' # can change the colors in powerpoint
+cmap = 'copper'
 
 fig, ax = plt.subplots(3, 1, figsize=(6, 9), 
                        sharex=True, sharey=False)
@@ -183,14 +183,26 @@ budgets_df['prct'] = budgets_df['variable'].str.extract('(\d+)')
 
 # %%
 fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+
+# once for the legend, once overlaid for the scenario colors
+sns.scatterplot(data=budgets_df, x='co2', y='value', 
+                ax=ax[0], size='prct', legend='full')
 sns.scatterplot(data=budgets_df, x='co2', y='value', hue='scenario', palette=cmap,
-                ax=ax[0], size='prct', legend='brief')
+                ax=ax[0], size='prct', legend=False)
+
+# improve the legend
+handles, labels = ax[0].get_legend_handles_labels()
+order = [4,3,2,1,0]
+ax[0].legend([handles[idx] for idx in order], [labels[idx] for idx in order],
+            title='Chance (%)', fancybox=True) 
 
 ax[0].set(ylabel='Temperature $(\Delta ^{\circ}$C) exceeded', ylim=[1, 2.5],
         xlabel='Additional CO2 emissions from 2020 (GtCO2)', xlim=[0, 1500], 
         title='Carbon budgets')
+sns.move_legend(ax[0], loc='lower right', bbox_to_anchor=(1.4, 0.6), ncol=1, frameon=True)
+
 sns.despine(trim=True)
-ax[0].legend(loc='center left', bbox_to_anchor=(1.25, 0.5), ncol=1)
+#x[0].legend(loc='center left', bbox_to_anchor=(1.25, 0.5), ncol=1)
 ax[1].set_axis_off()
 
 fig.supxlabel('By Anne Urai | Data: IPCC', x=0.3, y=-0.05, ha='right', color='lightgrey')
