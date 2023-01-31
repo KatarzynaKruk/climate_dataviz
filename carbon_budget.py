@@ -64,40 +64,65 @@ temp_df['year'] = temp_df.Year + (temp_df.variable - 1) / 12
 temp_df = temp_df.sort_values(by=['Year'])
 
 # %% ===============================
-# add different scenarios for emission reduction between 2020 and 2050
-# use Beta function to model decreasing emissions at different rates
 
-beta_params = [ [2,5], [3,3], [5,2]] # fast, medium, procrastinate
-scenario_list = []
-for scen_idx, beta_param in enumerate(beta_params):
-    x = np.linspace(0, 1, 29)
-    this_cdf = df_historic.co2.values[-1] * (-stats.beta.cdf(x,
-                beta_param[0], beta_param[1]) + 1)
+use_ipcc_pathways = False
+if use_ipcc_pathways:
 
-    # add to dataframe
-    df_future = pd.concat([df_historic, 
-        pd.DataFrame({'year':np.arange(2022, 2051), 'co2':this_cdf}),
-        pd.DataFrame({'year':np.arange(2050, 2101), 'co2':np.zeros(51,)}
-        )])
-    df_future['scenario'] = scen_idx + 1
-    scenario_list.append(df_future)
+    # IPCC scenarios from Our World in Data
+    # don't use this for now: the spacing is only one datapoint for every 10 years
+    df2 = pd.read_csv('ipcc-scenarios.csv')
+    # ToDo: better to use https://data.ece.iiasa.ac.at/ar6/#/login
+    df2 = df2.loc[df2.Scenario.str.contains('Baseline'), ['Year', 'CO2 emissions', 'Temperature', 'Scenario']]
+    df2['scenario'] = df2['Scenario'].str.extract('(\d+)')
+    df2['year'] = df2['Year']
+    df2['co2'] = df2['CO2 emissions'] / 1000000000
+    df2 = df2.loc[df2.year > 2019, :]
 
-# and another set, but with net-zero only in 2075
-beta_params = [ [3,3], [5,2]] # fast, medium, procrastinate
-for scen_idx, beta_param in enumerate(beta_params):
-    x = np.linspace(0, 1, 54)
-    this_cdf = df_historic.co2.values[-1] * (-stats.beta.cdf(x,
-                beta_param[0], beta_param[1]) + 1)
+    df_historic_list = []
+    for scenario in range(5):
+        df_historic['scenario'] = scenario
+        df_historic_list.append(df_historic.copy())
+    df_historic_list2 = pd.concat(df_historic_list)
+    df = pd.concat([df_historic_list2[['year', 'co2', 'scenario']], 
+                    df2[['year', 'co2', 'scenario']]])
 
-    # add to dataframe
-    df_future = pd.concat([df_historic, 
-        pd.DataFrame({'year':np.arange(2022, 2076), 'co2':this_cdf}),
-        pd.DataFrame({'year':np.arange(2075, 2101), 'co2':np.zeros(26,)}
-        )])
-    df_future['scenario'] = scen_idx + 4
-    scenario_list.append(df_future)
+else:
 
-df = pd.concat(scenario_list).reset_index()
+    # % ===============================
+    # add different scenarios for emission reduction between 2020 and 2050
+    # use Beta function to model decreasing emissions at different rates
+
+    beta_params = [ [2,5], [3,3], [5,2]] # fast, medium, procrastinate
+    scenario_list = []
+    for scen_idx, beta_param in enumerate(beta_params):
+        x = np.linspace(0, 1, 29)
+        this_cdf = df_historic.co2.values[-1] * (-stats.beta.cdf(x,
+                    beta_param[0], beta_param[1]) + 1)
+
+        # add to dataframe
+        df_future = pd.concat([df_historic, 
+            pd.DataFrame({'year':np.arange(2022, 2051), 'co2':this_cdf}),
+            pd.DataFrame({'year':np.arange(2050, 2101), 'co2':np.zeros(51,)}
+            )])
+        df_future['scenario'] = scen_idx + 1
+        scenario_list.append(df_future)
+
+    # and another set, but with net-zero only in 2075
+    beta_params = [ [3,3], [5,2]] # fast, medium, procrastinate
+    for scen_idx, beta_param in enumerate(beta_params):
+        x = np.linspace(0, 1, 54)
+        this_cdf = df_historic.co2.values[-1] * (-stats.beta.cdf(x,
+                    beta_param[0], beta_param[1]) + 1)
+
+        # add to dataframe
+        df_future = pd.concat([df_historic, 
+            pd.DataFrame({'year':np.arange(2022, 2076), 'co2':this_cdf}),
+            pd.DataFrame({'year':np.arange(2075, 2101), 'co2':np.zeros(26,)}
+            )])
+        df_future['scenario'] = scen_idx + 4
+        scenario_list.append(df_future)
+
+    df = pd.concat(scenario_list).reset_index()
 
 # %% ===============================
 # for each scenario, integrate to get the cumulative CO2
