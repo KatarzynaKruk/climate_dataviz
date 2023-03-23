@@ -2,18 +2,19 @@
 
 Scripts and graphics to show different net-zero scenarios and their consequences for atmospheric CO2 and global temperatures.
 
-Katarzyna Kruk and Anne Urai, Leiden University, 2023
-
-This work is licensed under a
-[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
+_Katarzyna Kruk and Anne Urai, Leiden University, 2023._
+Thanks to Dr. Paul Behrens for advice on data sources and conversion factors.
 
 [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+[![DOI](https://zenodo.org/badge/574547375.svg)](https://zenodo.org/badge/latestdoi/574547375)
 
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
-Thanks to Dr. Paul Behrens for advice on data sources and conversion factors.
+If you use the code or graphics, please cite:
+
+Kruk & Urai (2023). Net-zero scenarios. _Zenodo_, https://doi.org/10.5281/zenodo.7762445.
 
 ---
 
