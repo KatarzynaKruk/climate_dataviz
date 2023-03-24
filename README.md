@@ -1,16 +1,17 @@
 ##  Net-zero scenarios
 
+![DOI](https://zenodo.org/badge/574547375.svg)
+
+[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+
 Scripts and graphics to show different net-zero scenarios and their consequences for atmospheric CO2 and global temperatures. See the graphics folder for powerpoint slides, images and a movie.
 
 _Katarzyna Kruk and Anne Urai, Leiden University, 2023._
 
----
-
-If you use the code or graphics, please cite:
-
-- Kruk & Urai (2023). Net-zero scenarios. _Zenodo_, [![DOI](https://zenodo.org/badge/574547375.svg)](https://zenodo.org/badge/latestdoi/574547375) [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+If you use the code or graphics, please cite: Kruk & Urai (2023). Net-zero scenarios. _Zenodo_, https://doi.org/10.5281/zenodo.7767084.
 
 ![example image](graphics/netzero_scenarios_KrukUrai_Shade_Annotations.JPG)
+
 ---
 
 ### Data sources
