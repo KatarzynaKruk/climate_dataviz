@@ -7,9 +7,9 @@ _Katarzyna Kruk and Anne Urai, Leiden University, 2023._
 
 If you use the code or graphics, please cite:
 
-- Kruk & Urai (2023). Net-zero scenarios. _Zenodo_, [![DOI](https://zenodo.org/badge/574547375.svg)](https://zenodo.org/badge/latestdoi/574547375)
+- Kruk & Urai (2023). Net-zero scenarios. _Zenodo_, [![DOI](https://zenodo.org/badge/574547375.svg)](https://zenodo.org/badge/latestdoi/574547375) [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
 
-[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+![example image](graphics/netzero_scenarios_KrukUrai_Shade_Annotations.JPG)
 ---
 
 ### Data sources
@@ -27,3 +27,5 @@ If you use the code or graphics, please cite:
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+
+
