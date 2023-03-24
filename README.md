@@ -1,6 +1,6 @@
 ##  Net-zero scenarios
 
-Scripts and graphics to show different net-zero scenarios and their consequences for atmospheric CO2 and global temperatures.
+Scripts and graphics to show different net-zero scenarios and their consequences for atmospheric CO2 and global temperatures. See the graphics folder for powerpoint slides, images and a movie.
 
 _Katarzyna Kruk and Anne Urai, Leiden University, 2023._
 
