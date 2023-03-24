@@ -1,6 +1,6 @@
 ##  Net-zero scenarios
 
-![DOI](https://zenodo.org/badge/574547375.svg)
+[![DOI](https://zenodo.org/badge/574547375.svg)](https://zenodo.org/badge/latestdoi/574547375)
 
 [![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
 
