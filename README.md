@@ -25,6 +25,7 @@ If you use the code or graphics, please cite: Kruk & Urai (2023). Net-zero scena
 - Friedlingstein et al. (2022). Global Carbon Budget 2021. Earth System Science Data, 14(4), 1917–2005. https://doi.org/10.5194/essd-14-1917-2022
 - Rogelj, J., Forster, P. M., Kriegler, E., Smith, C. J., & Séférian, R. (2019). Estimating and tracking the remaining carbon budget for stringent climate targets. Nature, 571(7765). https://doi.org/10.1038/s41586-019-1368-z
 - AR6 Synthesis Report Climate Change 2023 — IPCC. https://www.ipcc.ch/report/sixth-assessment-report-cycle/
+- https://myclimatefuture.info/
 
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
