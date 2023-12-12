@@ -1,0 +1,21 @@
+#intention to share
+jaspRegression::RegressionLogistic(
+        version = "0.17.2",
+        formula = INTENTION_TO_SHARE ~ ANIMATION + ANNOTATIONS + SHADE)
+jaspRegression::RegressionLogistic(
+        version = "0.17.2",
+        formula = INTENTION_TO_SHARE ~ ANIMATION + ANNOTATIONS + SHADE + ACTIVISM_MEAN + GL_MEAN_SCORE,
+        covariates = list("GL_MEAN_SCORE", "ACTIVISM_MEAN"))
+
+#actual sharing 
+jaspRegression::RegressionLogistic(
+        version = "0.17.2",
+        formula = ACTUAL_SHARING ~ ANIMATION + ANNOTATIONS + SHADE)
+jaspRegression::RegressionLogistic(
+        version = "0.17.2",
+        formula = ACTUAL_SHARING ~ ANIMATION + ANNOTATIONS + SHADE + GL_MEAN_SCORE + ACTIVISM_MEAN,
+        covariates = list("ACTIVISM_MEAN", "GL_MEAN_SCORE"))
+jaspRegression::RegressionLogistic(
+        version = "0.17.2",
+        formula = ACTUAL_SHARING ~ ANIMATION + ANNOTATIONS + SHADE + ACTIVISM_MEAN,
+        covariates = "ACTIVISM_MEAN")
