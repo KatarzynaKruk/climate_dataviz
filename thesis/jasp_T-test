@@ -1,0 +1,11 @@
+jaspTTests::TTestIndependentSamples(
+        version = "0.17.2",
+        formula =  ~ RISK_MEAN + BELIEFS_MEAN + POLICY_MEAN,
+        barPlot = TRUE,
+        barPlotErrorType = "se",
+        effectSize = TRUE,
+        equalityOfVariancesTest = TRUE,
+        equalityOfVariancesTestType = "levene",
+        group = "GROUP",
+        normalityTest = TRUE,
+        raincloudPlot = TRUE)
