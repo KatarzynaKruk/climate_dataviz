@@ -1,0 +1,95 @@
+#risk perception
+jaspAnova::Anova(
+        version = "0.17.2",
+        formula = RISK_MEAN ~ SHADE * ANNOTATIONS * ANIMATION,
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        descriptivePlotErrorBar = TRUE,
+        descriptivePlotHorizontalAxis = "SHADE",
+        descriptivePlotSeparateLines = "ANNOTATIONS",
+        descriptivePlotSeparatePlot = "ANIMATION",
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE,
+        kruskalWallisFactors = list("SHADE", "ANNOTATIONS", "ANIMATION"))
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = RISK_MEAN ~ SHADE * ANNOTATIONS * ANIMATION + GL_MEAN_SCORE + ACTIVISM_MEAN,
+        covariates = list("ACTIVISM_MEAN", "GL_MEAN_SCORE"),
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE,
+        kruskalWallisFactors = list("SHADE", "ANNOTATIONS", "ANIMATION"))
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = RISK_MEAN ~ SHADE * ANNOTATIONS * ANIMATION + GL_MEAN_SCORE + ACTIVISM_MEAN,
+        covariates = list("ACTIVISM_MEAN", "GL_MEAN_SCORE"),
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE,
+        kruskalWallisFactors = list("SHADE", "ANNOTATIONS", "ANIMATION"))
+
+#climate beliefs
+jaspAnova::Anova(
+        version = "0.17.2",
+        formula = BELIEFS_MEAN ~ SHADE * ANNOTATIONS * ANIMATION,
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        descriptivePlotErrorBar = TRUE,
+        descriptivePlotHorizontalAxis = "SHADE",
+        descriptivePlotSeparateLines = "ANNOTATIONS",
+        descriptivePlotSeparatePlot = "ANIMATION",
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE)
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = BELIEFS_MEAN ~ SHADE * ANNOTATIONS * ANIMATION * ACTIVISM_MEAN + GL_MEAN_SCORE,
+        covariates = list("ACTIVISM_MEAN", "GL_MEAN_SCORE"),
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE)
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = BELIEFS_MEAN ~ SHADE * ANNOTATIONS * ANIMATION + ACTIVISM_MEAN,
+        covariates = "ACTIVISM_MEAN",
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE)
+
+#policy support
+jaspAnova::Anova(
+        version = "0.17.2",
+        formula = POLICY_MEAN ~ SHADE * ANNOTATIONS * ANIMATION,
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        descriptivePlotErrorBar = TRUE,
+        descriptivePlotHorizontalAxis = "SHADE",
+        descriptivePlotSeparateLines = "ANNOTATIONS",
+        descriptivePlotSeparatePlot = "ANIMATION",
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE,
+        homogeneityTests = TRUE)
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = POLICY_MEAN ~ SHADE * ANNOTATIONS * ANIMATION + ACTIVISM_MEAN + GL_MEAN_SCORE,
+        covariates = list("ACTIVISM_MEAN", "GL_MEAN_SCORE"),
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE)
+jaspAnova::Ancova(
+        version = "0.17.2",
+        formula = POLICY_MEAN ~ SHADE * ANNOTATIONS * ANIMATION * ACTIVISM_MEAN,
+        covariates = "ACTIVISM_MEAN",
+        contrasts = list(list(contrast = "none", variable = "SHADE"), list(contrast = "none", variable = "ANNOTATIONS"), list(contrast = "none", variable = "ANIMATION"), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS")), list(contrast = "none", variable = list("SHADE", "ANIMATION")), list(contrast = "none", variable = list("ANNOTATIONS", "ANIMATION")), list(contrast = "none", variable = list("SHADE", "ANNOTATIONS", "ANIMATION"))),
+        effectSizeEstimates = TRUE,
+        effectSizeEtaSquared = FALSE,
+        effectSizePartialEtaSquared = TRUE)
