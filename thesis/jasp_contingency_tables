@@ -1,0 +1,18 @@
+#intention to share
+jaspFrequencies::ContingencyTables(
+        version = "0.17.2",
+        formula = INTENTION_TO_SHARE ~ GROUP,
+        contingencyCoefficient = TRUE,
+        lambda = TRUE,
+        likelihoodRatio = TRUE,
+        oddsRatio = TRUE,
+        phiAndCramersV = TRUE)
+#actual sharing
+jaspFrequencies::ContingencyTables(
+        version = "0.17.2",
+        formula = ACTUAL_SHARING ~ GROUP,
+        contingencyCoefficient = TRUE,
+        lambda = TRUE,
+        likelihoodRatio = TRUE,
+        oddsRatio = TRUE,
+        phiAndCramersV = TRUE)
