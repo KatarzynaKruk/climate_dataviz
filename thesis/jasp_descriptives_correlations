@@ -1,0 +1,23 @@
+#descriptive statistics
+  jaspDescriptives::Descriptives(
+        version = "0.17.2",
+        formula =  ~ GL_MEAN_SCORE + RISK_MEAN + BELIEFS_MEAN + POLICY_MEAN + ACTIVISM_MEAN + SHARING_AVERAGE,
+        boxPlot = TRUE,
+        boxPlotColourPalette = TRUE,
+        boxPlotJitter = TRUE,
+        distributionAndCorrelationPlotDensity = TRUE,
+        distributionPlots = TRUE,
+        kurtosis = TRUE,
+        shapiroWilkTest = TRUE,
+        skewness = TRUE,
+        splitBy = "GROUP")
+
+  #correlations
+    jaspRegression::Correlation(
+        version = "0.17.2",
+        ci = TRUE,
+        heatmapPlot = TRUE,
+        pearson = FALSE,
+        significanceFlagged = TRUE,
+        spearman = TRUE,
+        variables = list("GL_MEAN_SCORE", "RISK_MEAN", "BELIEFS_MEAN", "POLICY_MEAN", "ACTIVISM_MEAN", "SHARING_AVERAGE"))
