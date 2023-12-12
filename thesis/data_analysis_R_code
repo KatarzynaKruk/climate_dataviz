@@ -1,1 +1,134 @@
+library(ggplot2)
+library(forcats)
+library(ggExtra)
+library(ggpubr)
 
+myFormat <- theme_classic() +
+  theme(axis.title.x=element_text(size=rel(1.4), vjust=0.1)) +
+  theme(axis.title.y=element_text(size=rel(1.4), vjust=1.3)) +
+  theme(plot.title=element_text(face='bold',size=rel(1.5), vjust=2)) +
+  theme(axis.text=element_text(size=rel(1.4), colour="black"))+
+  theme(legend.title=element_text(size=rel(1.4)))+
+  theme(legend.text=element_text(size=rel(1.3)))+
+  theme(panel.background = element_rect(fill = "white")) +
+  theme(panel.grid.major=element_line(colour=NA)) +
+  theme(panel.grid.minor=element_line(colour=NA)) 
+
+data<-read.csv("C:/Users/dbind/OneDrive/Desktop/06.12_changed_groups_labels.csv", header=T)
+
+data$SHARING_AVERAGE[data$SHARING_AVERAGE==99]<-(-1)
+  
+MeanScorePlot<-ggplot()+
+  geom_bar(data=data, aes(x=as.factor(GROUP_NEW), fill=as.factor(GL_MEAN_SCORE)))+
+  labs(x="Group", y="Participants count")+
+  scale_fill_discrete(name="Mean score")+
+  scale_y_continuous(breaks=seq(from=0, to=40, by=5))+
+  coord_cartesian(ylim=c(0, 40))+
+  myFormat+
+  theme(legend.position = "top")
+
+SharAvgPlot<-ggplot()+
+  geom_bar(data=data, aes(x=as.factor(GROUP_NEW), fill=as.factor(SHARING_AVERAGE), col=as.factor(SHARING_AVERAGE)))+
+  labs(x="Group", y="Participants count")+
+  scale_fill_manual(name="", labels=c("Missing", "No intention to share\nDid not share", "Intention to share\nDid not share", 
+                                             "Intention to share\nShared"), values=c("white", 2, 3, 4))+
+  scale_color_manual(name="", labels=c("Missing", "No intention to share\nDid not share", "Intention to share\nDid not share", 
+                                              "Intention to share\nShared"), values=c("black", 2, 3, 4))+
+  scale_y_continuous(breaks=seq(from=0, to=40, by=5))+
+  coord_cartesian(ylim=c(0, 40))+
+  myFormat+
+  theme(legend.position = "top")
+
+RiskMean<-ggplot()+
+  geom_point(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=RISK_MEAN, col=as.factor(GROUP_NEW)), size=2, position="jitter", show.legend = F)+
+  geom_boxplot(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=RISK_MEAN, fill=as.factor(GROUP_NEW)), alpha=0.4, show.legend = F)+
+  labs(x="Group", y="Risk perception")+
+  scale_fill_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_color_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_x_discrete(labels=c("h", "x"))+
+  myFormat
+RiskMean<-ggMarginal(RiskMean, type="density", groupFill = T, alpha=0.4)
+
+ClimBel<-ggplot()+
+  geom_point(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=BELIEFS_MEAN, col=as.factor(GROUP_NEW)), size=2, position="jitter", show.legend = F)+
+  geom_boxplot(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=BELIEFS_MEAN, fill=as.factor(GROUP_NEW)), alpha=0.4, show.legend = F)+
+  labs(x="Group", y="Climate beliefs")+
+  scale_fill_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_color_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_x_discrete(labels=c("h", "x"))+
+  myFormat
+ClimBel<-ggMarginal(ClimBel, type="density", groupFill = T, alpha=0.4)
+
+PolSup<-ggplot()+
+  geom_point(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=POLICY_MEAN, col=as.factor(GROUP_NEW)), size=2, position="jitter", show.legend = F)+
+  geom_boxplot(data=data[data$GROUP_NEW==8|data$GROUP_NEW==9,], aes(x=as.factor(GROUP_NEW), y=POLICY_MEAN, fill=as.factor(GROUP_NEW)), alpha=0.4, show.legend = F)+
+  scale_fill_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_color_manual(name="", values=c("#A5782B", "#616161"))+
+  scale_x_discrete(labels=c("h", "x"))+
+  myFormat+
+  labs(x="Group", y="Policy support")
+PolSup<-ggMarginal(PolSup, type="density", groupFill = T, alpha=0.4)
+
+setwd("C:/Users/dbind/OneDrive/Desktop/")
+png(filename="MeanScore.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+MeanScorePlot
+dev.off()
+png(filename="Sharing.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+SharAvgPlot
+dev.off()
+png(filename="Risk.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+RiskMean
+dev.off()
+png(filename="Climate.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+ClimBel
+dev.off()
+png(filename="Policy.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+PolSup
+dev.off()
+
+library(ggplot2)
+library(forcats)
+
+myFormat <- theme_classic() +
+  theme(axis.title.x=element_text(size=rel(1.4), vjust=0.1)) +
+  theme(axis.title.y=element_text(size=rel(1.4), vjust=1.3)) +
+  theme(plot.title=element_text(face='bold',size=rel(1.5), vjust=2)) +
+  theme(axis.text=element_text(size=rel(1.4), colour="black"))+
+  theme(legend.title=element_text(size=rel(1.4)))+
+  theme(legend.text=element_text(size=rel(1.3)))+
+  theme(panel.background = element_rect(fill = "white")) +
+  theme(panel.grid.major=element_line(colour=NA)) +
+  theme(panel.grid.minor=element_line(colour=NA)) 
+
+data<-read.csv("C:/Users/dbind/OneDrive/Desktop/06.12_changed_groups_labels.csv", header=T)
+
+data$SHARING_AVERAGE[data$SHARING_AVERAGE==99]<-(-1)
+  
+MeanScorePlot<-ggplot()+
+  geom_bar(data=data, aes(x=as.factor(GROUP_NEW), fill=as.factor(GL_MEAN_SCORE)))+
+  labs(x="Group", y="Participants count")+
+  scale_fill_discrete(name="Mean score")+
+  scale_y_continuous(breaks=seq(from=0, to=40, by=5))+
+  coord_cartesian(ylim=c(0, 40))+
+  myFormat+
+  theme(legend.position = "top")
+
+SharAvgPlot<-ggplot()+
+  geom_bar(data=data, aes(x=as.factor(GROUP_NEW), fill=as.factor(SHARING_AVERAGE), col=as.factor(SHARING_AVERAGE)))+
+  labs(x="Group", y="Participants count")+
+  scale_fill_manual(name="", labels=c("Missing", "No intention to share\nDid not share", "Intention to share\nDid not share", 
+                                             "Intention to share\nShared"), values=c("white", 2, 3, 4))+
+  scale_color_manual(name="", labels=c("Missing", "No intention to share\nDid not share", "Intention to share\nDid not share", 
+                                              "Intention to share\nShared"), values=c("black", 2, 3, 4))+
+  scale_y_continuous(breaks=seq(from=0, to=40, by=5))+
+  coord_cartesian(ylim=c(0, 40))+
+  myFormat+
+  theme(legend.position = "top")
+
+setwd("C:/Users/dbind/OneDrive/Desktop/")
+png(filename="MeanScore.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+MeanScorePlot
+dev.off()
+png(filename="Sharing.png", width=11.53*2, height = 7.69*2, units="cm", res=500)
+SharAvgPlot
+dev.off()
